@@ -23,9 +23,9 @@
   <div id='info'></div>
   <script>
     var map = makeMap();
+    var l = ['transit_bus', 'transit_max', 'transit_brt', 'transit_rail', 'transit_sc'];
     map.on('load', function () {
-      addLayers(map);
-      selection(map);
+      selection(map, l);
     });
   </script>
 </body>

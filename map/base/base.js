@@ -12,7 +12,7 @@ function getUrlParam(name, defVal) {
 }
 
 function makeMap(segmentsGeojson='trimet.geojson') {
-  var url = 'https://tiles.trimet.org/styles/trimet/style.json';
+  var url = 'https://tiles-st.trimet.org/styles/rtp/style.json';
   var customAttrib = '&copy;OpenTransitTools &copy;OpenStreetMap';
   var render_above_this_layer = 'road_major_label';
   // NOTE: 'road_major_label' is in the base layer style .. put here renders that above this layer

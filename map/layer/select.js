@@ -15,7 +15,7 @@ function getContent() {
   return Sqrl.render(template);
 }
 
-function setHoverState(map, value = false, layer = "transit") {
+function setHoverState(map, value = false, layer = "routes") {
   hoveredFeatures.forEach((hf) => {
     try {
       if (hf.layer.id && hf.id)
@@ -34,13 +34,22 @@ function setHoverState(map, value = false, layer = "transit") {
   });
 }
 
+
+function getUniqueSortedList(arr) {
+    // https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects
+    var retVal = [...new Map(arr.map(item => [item.properties.route_long_name, item])).values()];
+    retVal.sort((a, b) => (a.properties.route_sort_order > b.properties.route_sort_order) ? 1 : -1);
+    return retVal;
+}
+
 function mouseMoveEvent(map, features) {
+
   if (features.length > 0) {
     //console.log(features[0]);
     if (hoveredFeatures) {
       setHoverState(map);
     }
-    hoveredFeatures = features;
+    hoveredFeatures = getUniqueSortedList(features);
     setHoverState(map, true);
   }
 }
