@@ -24,9 +24,11 @@
   <script>
     var tiles = "https://tiles-st.trimet.org/styles/3d-routes/style.json";    
     var map = makeMap(tiles, zoom=14);
-    var l = ['transit_stop_circles', 'transit_stop_icons'];
+    var r = ['transit_bus', 'transit_max', 'transit_brt', 'transit_rail', 'transit_sc'];
+    var s = ['transit_stop_circles', 'transit_stop_icons'];
     map.on('load', function () {
-      stopSelection(map, l);
+      selection(map, r);
+      stopSelection(map, s);
     });
   </script>
 </body>

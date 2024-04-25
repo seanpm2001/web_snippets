@@ -1,8 +1,22 @@
 var hoveredFeatures = null;
 var isRoutes = false;
 
+
+const markerHeight = 20, markerRadius = 10, linearOffset = 10;
+const popupOffsets = {
+ 'top': [0, 0],
+ 'top-left': [0,0],
+ 'top-right': [0,0],
+ 'bottom': [0, -markerHeight],
+ 'bottom-left': [linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
+ 'bottom-right': [-linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
+ 'left': [markerRadius, (markerHeight - markerRadius) * -1],
+ 'right': [-markerRadius, (markerHeight - markerRadius) * -1]
+ };
+
 // Create a popup, but don't add it to the map yet.
 const popup = new maplibregl.Popup({
+  offset: popupOffsets,
   closeButton: false,
   closeOnClick: false
 });
@@ -114,6 +128,20 @@ function selection(map, layers = layerList) {
 }
 
 
+function stopToolTip(map, feature, content, e) {
+  const coordinates = feature.geometry.coordinates.slice();
+
+  // Ensure that if the map is zoomed out such that multiple
+  // copies of the feature are visible, the popup appears
+  // over the copy being pointed to.
+  while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+  }
+
+  // Populate the popup and set its coordinates based on the feature found.
+  popup.setLngLat(coordinates).setHTML(content).addTo(map);  
+}
+
 /** mouse over selects map's stop features */
 function stopSelection(map, layers = layerList) {
   map.on("mousemove", (e) => {
@@ -122,11 +150,11 @@ function stopSelection(map, layers = layerList) {
     if (features.length > 0) {
       map.getCanvas().style.cursor = 'pointer';
       mouseMoveEvent(map, features);
-      showInfo(getStopContent());
+      stopToolTip(map, features[0], getStopContent(), e);
     } else {
       map.getCanvas().style.cursor = '';
-      mouseLeaveEvent(map);
-      clearInfo();
+      popup.remove();
+      mouseLeaveEvent(map);      
     } 
   });
 }
