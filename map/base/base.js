@@ -11,23 +11,16 @@ function getUrlParam(name, defVal) {
   return retVal;
 }
 
-function makeMap(segmentsGeojson='trimet.geojson') {
-  var url = 'https://tiles-st.trimet.org/styles/rtp/style.json';
+function makeMap(url, zoom=10, center=[-122.67, 45.51]) {
   var customAttrib = '&copy;OpenTransitTools &copy;OpenStreetMap';
-  var render_above_this_layer = 'road_major_label';
-  // NOTE: 'road_major_label' is in the base layer style .. put here renders that above this layer
 
-  if(segmentsGeojson !== 'trimet.geojson' && segmentsGeojson !== 'ctran.geojson') {
-    url = "https://api.maptiler.com/maps/bright/style.json?key=wUvV014mmfzELsh6ucYT";
-    url = "https://api.maptiler.com/maps/voyager/style.json?key=wUvV014mmfzELsh6ucYT";
-    customAttrib = '&copy;MapTiler &copy;OpenStreetMap';
-    render_above_this_layer = 'place_hamlet';
-  }
-
+  if (!url) url = 'https://tiles-st.trimet.org/styles/rtp/style.json';
   var map = new maplibregl.Map({
     container: 'map',
     style: url,
     pitch: 0,
+    center: center,
+    zoom: zoom,
     antialias: true,
     hash: true,
     attributionControl: false

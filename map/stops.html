@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- note: much of the code / style ideas taken from various examples of mapbox's gl js -->
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OTT Stops Map</title>
+    <link rel="stylesheet" type="text/css" href="https://tiles.trimet.org/maplibre-gl.css" />
+    <script src="https://tiles.trimet.org/maplibre-gl.js"></script>
+    <script>var mapboxgl=maplibregl;</script>
+    <link  href='https://joxit.dev/pelias-mapbox-gl-js/pelias-geocoder.css' rel='stylesheet' type='text/css'/>
+    <script src="https://joxit.dev/pelias-mapbox-gl-js/pelias-geocoder.js"></script>
+    <script src="https://unpkg.com/squirrelly@9.0.0/dist/browser/squirrelly.min.js"></script>
+    <link  href="./base/base.css" rel="stylesheet" type="text/css"/>
+    <script src="./base/base.js"></script>
+    <link  href="./info/info.css" rel="stylesheet" type="text/css"/>
+    <script src="./info/info.js"></script>
+    <script src="./layer/layer.js"></script>
+    <script src="./layer/select.js"></script>
+  </head>
+<body>
+  <div id='map'></div>
+  <div id='info'></div>
+  <script>
+    var tiles = "https://tiles-st.trimet.org/styles/3d-routes/style.json";    
+    var map = makeMap(tiles, zoom=14);
+    var l = ['transit_stop_circles', 'transit_stop_icons'];
+    map.on('load', function () {
+      stopSelection(map, l);
+    });
+  </script>
+</body>
+</html>
